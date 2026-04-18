@@ -129,19 +129,22 @@ const getLegalMoves = (currentShogi: any, color: Color): Move[] => {
   
   for (let x = 1; x <= 9; x++) {
     for (let y = 1; y <= 9; y++) {
-      const piece = currentShogi.get(x, y);
-      if (piece && piece.color === color) {
+      const boardPiece = currentShogi.get(x, y);
+      if (boardPiece && boardPiece.color === color) {
+        const pieceKind = boardPiece.kind;
+        const pieceColor = boardPiece.color;
         const pseudoMoves = currentShogi.getMovesFrom(x, y);
+        
         for (const pm of pseudoMoves) {
           const isPromotionZone = (c: Color, row: number) => c === Color.Black ? row <= 3 : row >= 7;
-          const isPromoted = ["TO", "NY", "NK", "NG", "UM", "RY"].includes(piece.kind);
+          const isPromoted = ["TO", "NY", "NK", "NG", "UM", "RY"].includes(pieceKind);
           const canPromote = !isPromoted && 
-                             !['KI', 'OU', 'GY'].includes(piece.kind) &&
-                             (isPromotionZone(piece.color, y) || isPromotionZone(piece.color, pm.to.y));
+                             !['KI', 'OU', 'GY'].includes(pieceKind) &&
+                             (isPromotionZone(pieceColor, y) || isPromotionZone(pieceColor, pm.to.y));
                              
           const mustPromote = canPromote && (
-            (['FU', 'KY'].includes(piece.kind) && (piece.color === Color.Black ? pm.to.y === 1 : pm.to.y === 9)) ||
-            (piece.kind === 'KE' && (piece.color === Color.Black ? pm.to.y <= 2 : pm.to.y >= 8))
+            (['FU', 'KY'].includes(pieceKind) && (pieceColor === Color.Black ? pm.to.y === 1 : pm.to.y === 9)) ||
+            (pieceKind === 'KE' && (pieceColor === Color.Black ? pm.to.y <= 2 : pm.to.y >= 8))
           );
 
           if (!mustPromote) {
@@ -901,17 +904,20 @@ SFEN形式の例: 7nl/1R3sk2/5pppp/9/9/9/9/9/9 b GS 1
         return;
       }
 
+      const pieceKind = piece.kind;
+      const pieceColor = piece.color;
+
       const move: Move = { from: selectedSquare, to: { x, y }, promote: false };
       
       const isPromotionZone = (color: Color, row: number) => color === Color.Black ? row <= 3 : row >= 7;
-      const isPromoted = ["TO", "NY", "NK", "NG", "UM", "RY"].includes(piece.kind);
+      const isPromoted = ["TO", "NY", "NK", "NG", "UM", "RY"].includes(pieceKind);
       const canPromote = !isPromoted && 
-                         !['KI', 'OU', 'GY'].includes(piece.kind) &&
-                         (isPromotionZone(piece.color, selectedSquare.y) || isPromotionZone(piece.color, y));
+                         !['KI', 'OU', 'GY'].includes(pieceKind) &&
+                         (isPromotionZone(pieceColor, selectedSquare.y) || isPromotionZone(pieceColor, y));
                          
       const mustPromote = canPromote && (
-        (['FU', 'KY'].includes(piece.kind) && (piece.color === Color.Black ? y === 1 : y === 9)) ||
-        (piece.kind === 'KE' && (piece.color === Color.Black ? y <= 2 : y >= 8))
+        (['FU', 'KY'].includes(pieceKind) && (pieceColor === Color.Black ? y === 1 : y === 9)) ||
+        (pieceKind === 'KE' && (pieceColor === Color.Black ? y <= 2 : y >= 8))
       );
 
       if (mustPromote) {
