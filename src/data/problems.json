@@ -2,7 +2,7 @@
   {
     "id": 1,
     "title": "第1問",
-    "description": "ファイルから追加された問題です。",
+    "description": "ファイルから追加された問題です。 (Synced: 2026-05-03T13:50)",
     "initialSfen": "6+B2/8k/7gp/9/9/9/9/9/9 b GN 1"
   },
   {
@@ -134,7 +134,7 @@
   {
     "id": 23,
     "title": "第23問",
-    "description": "ファイルから追加された問題です。",
+    "description": "本の123番。少し難しめかも。",
     "initialSfen": "7kl/6g2/8R/5+b1N1/9/9/9/9/9 b Grb2g4s3n3l18p 1"
   },
   {
